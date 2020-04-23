@@ -18,7 +18,7 @@ hair_1 <- tibble(
   x = c(7:18),
   y = c(10, 10, 11, 21, 22, 22, 22, 21, rep(11, 4)),
   h = c(4, 8, 11, rep(2, 5), 11, 8, 4, 3),
-  colour = "#2F2C24"
+  colour = "#2F2C23"
 )
 
 clothes_2 <-tibble(
@@ -71,15 +71,25 @@ people <- do.call("rbind", list(person_1, person_2, person_3))
 
 ggplot(people) +
   geom_segment(aes(x = x, y = y, xend = x, yend = y + h, colour = colour), size = 8.3) +
-  scale_color_identity() +
+  scale_color_identity(breaks = c("#A8B7C2", "#4771B7", "#E93223"),
+                       labels = c("Doing\nuseful data\nanalysis", "Me\n\n", "Making\nstupid ggplot\nbar charts"),
+                       guide = guide_legend(title = "",  keyheight = 7,
+                                            override.aes = list(size = 6))) +
   scale_x_continuous(breaks = c(0:42), expand = c(0, 0)) +
-  scale_y_continuous(breaks = c(0:30), expand = c(0, 0)) +
-  coord_fixed(ylim = c(0, 30)) +
-  theme_linedraw() +
+  scale_y_continuous(breaks = c(seq(0, 30, 5)), minor_breaks = c(0:30), expand = c(0, 0)) +
+  labs(title = "Chart Title") +
+  coord_fixed(xlim = c(0.5, 42.5), ylim = c(0, 30)) +
+  theme_linedraw(base_family = "Calibri") +
   theme(
+    legend.text = element_text(size = 18, vjust = -0.3, lineheight = 1.3),
+    legend.margin = margin(0, 0, 80, 0),
     plot.background = element_rect(fill = "white", colour = NA),
+    panel.border = element_rect(colour = "grey70"),
     axis.title = element_blank(),
     axis.ticks = element_blank(),
-    panel.grid.minor = element_blank()
+    axis.text = element_text(size = 11),
+    panel.grid.major.x = element_blank(),
+    plot.title = element_text(size = 18, margin = margin(0, 0, 20, 0), hjust = 0.61),
+    plot.margin = margin(0, 5, 0, 20)
   ) +
-  ggsave("distracted.png", dpi = 320)
+  ggsave("distracted.png", dpi = 320, width = 9, height = 6)
